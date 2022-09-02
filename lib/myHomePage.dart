@@ -1,28 +1,91 @@
+import 'dart:math';
+
+import 'package:dispesas/components/transaction_form.dart';
 import 'package:dispesas/components/transaction_list.dart';
 import 'package:dispesas/components/transaction_user.dart';
 import 'package:dispesas/modules/transaction.dart';
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final _transaction = [
+    Transaction(
+      id: 't1',
+      title: 'Novo sapato',
+      value: 310.10,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't1',
+      title: 'Novo sapato2',
+      value: 310.10,
+      date: DateTime.now(),
+    )
+  ];
+
+  __addTransaction(String title, double value) {
+    final newTrasaction = Transaction(
+      id: Random().nextDouble().toString(),
+      title: title,
+      value: value,
+      date: DateTime.now(),
+    );
+
+    setState(() {
+      _transaction.add(newTrasaction);
+    });
+
+    Navigator.of(context).pop();
+  }
+
+  _openTransactionFormModal(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (ctx) {
+          return TransactionForm(__addTransaction);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Dispesas Pessoais'),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            child: Card(
-              color: Colors.blue,
-              child: Text('Gráfico'),
-              elevation: 5,
-            ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              _openTransactionFormModal(context);
+            },
           ),
-          TransactionUser(),
         ],
       ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              child: Card(
+                color: Colors.blue,
+                child: Text('Gráfico'),
+                elevation: 5,
+              ),
+            ),
+            TransactionList(_transaction),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _openTransactionFormModal(context);
+        },
+        child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
