@@ -21,11 +21,17 @@ class _MyWidgetState extends State<TransactionUser> {
       date: DateTime.now(),
     ),
     Transaction(
-      id: 't1',
+      id: 't2',
       title: 'Novo sapato2',
       value: 310.10,
       date: DateTime.now(),
-    )
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Novo sapato4',
+      value: 110.10,
+      date: DateTime.now().add(Duration(days: 1)),
+    ),
   ];
 
   __addTransaction(String title, double value) {

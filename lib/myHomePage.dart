@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:dispesas/components/chart.dart';
 import 'package:dispesas/components/transaction_form.dart';
 import 'package:dispesas/components/transaction_list.dart';
 import 'package:dispesas/components/transaction_user.dart';
@@ -24,8 +25,20 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Novo sapato2',
       value: 310.10,
       date: DateTime.now(),
-    )
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Novo sapato3',
+      value: 10.10,
+      date: DateTime.now().add(Duration(days: 2)),
+    ),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transaction.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
 
   __addTransaction(String title, double value) {
     final newTrasaction = Transaction(
@@ -68,13 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              child: Card(
-                color: Colors.blue,
-                child: Text('Gráfico'),
-                elevation: 5,
-              ),
-            ),
+            Chart(_recentTransactions),
             TransactionList(_transaction),
           ],
         ),
