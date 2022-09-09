@@ -14,9 +14,7 @@ class Chart extends StatelessWidget {
     print(this.recentTransaction.length);
 
     return List.generate(7, (index) {
-      final weekDay = DateTime.now().subtract(
-        Duration(days: index),
-      );
+      final weekDay = DateTime.now().subtract(Duration(days: index));
 
       double totalSum = 0;
 
@@ -25,10 +23,13 @@ class Chart extends StatelessWidget {
         bool sameMonth = recentTransaction[i].date.month == weekDay.month;
         bool sameYear = recentTransaction[i].date.year == weekDay.year;
 
-        if (sameDay && sameMonth && sameYear) {
-          totalSum += recentTransaction[i].value;
+        if (i == 2) {
           print(DateFormat.E().format(weekDay)[0]);
           print('Vlr  ${recentTransaction[i].value}');
+        }
+
+        if (sameDay && sameMonth && sameYear) {
+          totalSum += recentTransaction[i].value;
         }
       }
 
