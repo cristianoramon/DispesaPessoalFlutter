@@ -34,16 +34,24 @@ class _MyWidgetState extends State<TransactionUser> {
     ),
   ];
 
-  __addTransaction(String title, double value) {
+  __addTransaction(String title, double value, DateTime date) {
     final newTrasaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
 
     setState(() {
       _transaction.add(newTrasaction);
+    });
+  }
+
+  _deleteTransaction(String id) {
+    setState(() {
+      _transaction.removeWhere((tr) {
+        return tr.id == id;
+      });
     });
   }
 
@@ -52,7 +60,7 @@ class _MyWidgetState extends State<TransactionUser> {
     return Column(
       children: <Widget>[
         TransactionForm(__addTransaction),
-        TransactionList(_transaction),
+        TransactionList(_transaction, _deleteTransaction),
       ],
     );
   }
