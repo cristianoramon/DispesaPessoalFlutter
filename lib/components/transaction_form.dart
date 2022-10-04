@@ -45,60 +45,67 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(
-                labelText: 'Titulo1',
-              ),
-            ),
-            TextField(
-              controller: valueController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (value) => _submitForm(),
-              decoration: InputDecoration(
-                labelText: 'Valor (R\$)',
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    _selectDate == null
-                        ? 'Nenhum data selecionada!'
-                        : ' Data selecionada : ${DateFormat('dd/MM/y').format(_selectDate)}',
-                  ),
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: 10.0 + MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  labelText: 'Titulo1',
                 ),
-                ElevatedButton(
+              ),
+              TextField(
+                controller: valueController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onSubmitted: (value) => _submitForm(),
+                decoration: InputDecoration(
+                  labelText: 'Valor (R\$)',
+                ),
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
                     child: Text(
-                      'Seleciona data',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      _selectDate == null
+                          ? 'Nenhum data selecionada!'
+                          : ' Data selecionada : ${DateFormat('dd/MM/y').format(_selectDate)}',
                     ),
-                    onPressed: _showDatePicker,
+                  ),
+                  ElevatedButton(
+                      child: Text(
+                        'Seleciona data',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onPressed: _showDatePicker,
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).primaryColor,
+                      )),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor,
-                    )),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor),
-                  child: Text('Nova Transação'),
-                ),
-              ],
-            ),
-          ],
+                        primary: Theme.of(context).primaryColor),
+                    child: Text('Nova Transação'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

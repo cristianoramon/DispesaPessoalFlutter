@@ -10,10 +10,9 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      child: this.transaction.isEmpty
-          ? Column(
+    return this.transaction.isEmpty
+        ? LayoutBuilder(builder: (ctx, constraints) {
+            return Column(
               children: <Widget>[
                 SizedBox(
                   height: 20,
@@ -23,19 +22,20 @@ class TransactionList extends StatelessWidget {
                   height: 20,
                 ),
                 Container(
-                  height: 200,
+                  height: constraints.maxHeight * 0.6,
                   child: Image.asset(
                     'assets\\images\\waiting.png',
                     fit: BoxFit.cover,
                   ),
                 ),
               ],
-            )
-          : ListView.builder(
-              itemCount: this.transaction.length,
-              itemBuilder: (ctx, index) {
-                final tr = this.transaction[index];
-                return Card(
+            );
+          })
+        : ListView.builder(
+            itemCount: this.transaction.length,
+            itemBuilder: (ctx, index) {
+              final tr = this.transaction[index];
+              return Card(
                   elevation: 5,
                   margin: EdgeInsets.symmetric(
                     vertical: 8,
@@ -58,19 +58,29 @@ class TransactionList extends StatelessWidget {
                     subtitle: Text(
                       DateFormat('d MMM y').format(tr.date),
                     ),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Theme.of(context).errorColor,
-                      ),
-                      onPressed: () {
-                        onRemove(tr.id);
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
-    );
+                    trailing: MediaQuery.of(context).size.width < 400
+                        ? IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Theme.of(context).errorColor,
+                            ),
+                            onPressed: () {
+                              onRemove(tr.id);
+                            },
+                          )
+                        : ElevatedButton(
+                            child: Text(
+                              'Excluir',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            onPressed: () {
+                              onRemove(tr.id);
+                            },
+                          ),
+                  ));
+            },
+          );
   }
 }
